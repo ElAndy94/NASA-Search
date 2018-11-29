@@ -15,6 +15,20 @@
     line-height: 1;
 }
 
+h1 {
+    -webkit-text-stroke: 1px black;
+    color: white;
+    text-shadow:
+        3px 3px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: 6px;
+}
+
 .Items {
     position: relative;
     top: 30px;
@@ -24,4 +38,23 @@
     justify-content: center;
     width: 80%;
     margin: auto;
+}
+
+.Input_Box {
+    width: 20%;
+    padding-top: 10px;
+    padding-left: 2px;
+    font-size: 20px;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.CheckBox {
+    display: inline-block;
+}
+
+.No-Item {
+    letter-spacing: 1px;
+    font-weight: 400;
 }

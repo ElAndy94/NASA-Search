@@ -1,0 +1,89 @@
+.Button {
+    position: relative;
+    background-color: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    cursor: pointer;
+    border-radius: 100px;
+    font: inherit;
+    padding: 5px 10px 5px 10px !important;
+    margin: 10px !important;
+    font-weight: bold;
+    text-align: center;
+}
+  
+.Btn > * {
+transition: all 0.2s;
+}
+
+.Button:first-of-type {
+margin-left: 0;
+padding-left: 0;
+}
+
+.Button:disabled {
+color: #ccc;
+cursor: not-allowed;
+}
+
+.Success {
+background-image: linear-gradient(
+    to right,
+    #00cc00,
+    #009900
+);
+box-shadow: 0 1rem 4rem rgba(0,0,0,.30);
+}
+
+    .Success:focus,
+    .Success:hover {
+    outline: none;
+    transform: translateY(-3px);
+    animation: pulsate 1.5s infinite;
+    }
+
+        .Success::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            opacity: 0;
+        }
+
+            .Success:active,
+            .Success:focus {
+                outline: none;
+                transform: translateY(-1px);
+                box-shadow: 0 1rem 4rem rgba(0,0,0,.30);
+            }
+
+.Danger {
+    background-image: linear-gradient(
+        to right,
+        #fad84e,
+        #ba9608
+    );
+    box-shadow: 0 1rem 4rem rgba(0,0,0,.30);
+}
+    
+    .Danger:focus,
+    .Danger:hover {
+    outline: none;
+    transform: translateY(-3px);
+    animation: pulsate 1.5s infinite;
+    }
+
+@keyframes pulsate {
+    0% {
+        transform: scale(1);
+        box-shadow: none;
+    }
+
+    50% {
+        transform: scale(1.10);
+        box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.25);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: none;
+    }
+}
