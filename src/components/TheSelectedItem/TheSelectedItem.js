@@ -10,11 +10,11 @@ const theSelectedItem = (props) => (
         {
             props.image ?
             <div>
-                <img src={props.name} alt="Nasa" width="600" height="550" />
+                <img src={props.name} alt="Nasa" />
             </div>
             :
             <div>
-                <video width="600" height="600" controls autoPlay loop>
+                <video controls autoPlay loop>
                     <source src={props.name} type="video/mp4"/>
                     Your browser does not support the video tag.
                 </video>

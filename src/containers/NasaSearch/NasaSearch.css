@@ -46,7 +46,7 @@ h1 {
     width: 35%;
     padding-top: 6px;
     padding-left: 2px;
-    font-size: 24px;
+    font-size: 70%;
     font-family: "Lato", sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
@@ -82,4 +82,44 @@ input[type='checkbox'] {
 input[type='checkbox']:checked {
     background-image: linear-gradient(to right bottom, rgba(0, 255, 0, 0.8), rgba(255, 255, 255, 0.523));
 
+}
+
+@media only screen and (max-width : 900px) {
+    .input--mod {
+        width: 50%; 
+        font-size: 60%;
+    }
+    .nasa--box {
+        width: 80%;
+    }    
+}
+  
+@media only screen and (max-width : 700px) {
+    .input--mod {
+        width: 50%; 
+        font-size: 60%;
+    }
+    .nasa--box {
+        width: 80%;
+    }    
+}
+
+@media only screen and (max-width : 500px) {
+    .input--mod {
+        width: 65%; 
+        font-size: 60%;
+    }
+    .nasa--box {
+        width: 80%;
+    }    
+}
+
+@media only screen and (max-width : 500px) {
+    .input--mod {
+        width: 70%; 
+        font-size: 60%;
+    }
+    .nasa--box {
+        width: 90%;
+    }    
 }
