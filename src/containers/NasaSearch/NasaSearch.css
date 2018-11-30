@@ -1,4 +1,4 @@
-.NasaBox {
+.nasa--box {
     position: relative;
     top: 30px;
     background-image: linear-gradient(to right bottom, rgba(111, 172, 213, 0.8), rgba(83, 134, 211, 0.8));
@@ -29,7 +29,7 @@ h1 {
     letter-spacing: 6px;
 }
 
-.Items {
+.items {
     position: relative;
     top: 30px;
     color: #fff;
@@ -40,9 +40,9 @@ h1 {
     margin: auto;
 }
 
-.Input_Box {
-    width: 20%;
-    padding-top: 10px;
+.input--mod {
+    width: 25%;
+    padding-top: 6px;
     padding-left: 2px;
     font-size: 20px;
     font-family: "Lato", sans-serif;
@@ -50,11 +50,30 @@ h1 {
     letter-spacing: 1px;
 }
 
-.CheckBox {
+.checkbox {
     display: inline-block;
 }
 
-.No-Item {
+.no--item {
     letter-spacing: 1px;
     font-weight: 400;
+}
+
+.space--right {
+    margin-right: 2em;
+}
+
+input[type='checkbox'] {
+    position: relative;
+    -webkit-appearance:none;
+    width:25px;
+    height:25px;
+    top: 7px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background-image: linear-gradient(to right bottom, rgba(0, 255, 0, 0.8), rgba(255, 255, 255, 0.523));
+
 }

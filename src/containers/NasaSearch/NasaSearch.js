@@ -4,68 +4,93 @@ import {withRouter} from "react-router-dom";
 
 import './NasaSearch.css';
 import Aux from '../../hoc/Aux';
-import Input from '../../components/UI/Input/Input';
 import Item from '../../components/Item/Item';
-import { updateObject, checkValidity } from '../../shared/utility';
 import Button from '../../components/UI/Button/Button';
 
 class NasaSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            searchValue: '',
+            image: true,
+            video: false,
             items: [],
             filteredItems: [],
-            NasaForm: {
-                nasaSearch: {
-                    elementType: 'input',
-                    elementConfig: {
-                        className: 'Input_Box',
-                        type: 'text',
-                        placeholder: 'Moon'
-                    },
-                    value: '',
-                    validation: {
-                    required: true,
-                    minLength: 3,
-                    maxLength: 25
-                    },
-                    valid: true
-                },
-                nasaCheckImage: {
-                    elementType: 'input',
-                    elementConfig: {
-                        className: 'CheckBox',
-                        type: 'checkbox',
-                    },
-                    defaultvalue: 'Image',
-                    validation: {
-                    required: true,
-                    },
-                    valid: true,
-                    checked: true,
-                },
-                nasaCheckVideo: {
-                    elementType: 'input',
-                    elementConfig: {
-                        className: 'CheckBox',
-                        type: 'checkbox',
-                    },
-                    defaultvalue: 'Video',
-                    validation: {
-                        required: true,
-                    },
-                    valid: true,
-                    checked: false,
-                }
-            },
-            formIsValid: false
+            // NasaForm: {
+            //     nasaSearch: {
+            //         elementType: 'input',
+            //         elementConfig: {
+            //             className: 'Input_Box',
+            //             type: 'text',
+            //             placeholder: 'Moon'
+            //         },
+            //         value: '',
+            //         validation: {
+            //         required: true,
+            //         minLength: 3,
+            //         maxLength: 25
+            //         },
+            //         valid: true
+            //     },
+            //     nasaCheckImage: {
+            //         elementType: 'input',
+            //         elementConfig: {
+            //             className: 'CheckBox',
+            //             type: 'checkbox',
+            //         },
+            //         defaultvalue: 'Image',
+            //         validation: {
+            //         required: true,
+            //         },
+            //         valid: true,
+            //         checked: true,
+            //     },
+            //     nasaCheckVideo: {
+            //         elementType: 'input',
+            //         elementConfig: {
+            //             className: 'CheckBox',
+            //             type: 'checkbox',
+            //         },
+            //         defaultvalue: 'Video',
+            //         validation: {
+            //             required: true,
+            //         },
+            //         valid: true,
+            //         checked: false,
+            //     }
+            // },
+            errorInput: '',
+            errorCheckBox: '',
+        }
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange = (event) => {
+        event.preventDefault();
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({ [name]: value });
+
+        if (this.state.searchValue !== '') {
+            this.setState({ errorInput: '' });
+        }
+
+        if (this.state.image !== this.state.video) {
+            this.setState({ errorCheckBox: '' });
         }
     }
 
-    onFormSubmit = () => {
-        const searchValue = this.state.NasaForm.nasaSearch.value;
-        const checkForImages = this.state.NasaForm.nasaCheckImage.checked;
-        const checkForVideos = this.state.NasaForm.nasaCheckVideo.checked;
+    handleSubmit = () => {
+        const searchValue = this.state.searchValue;
+        const checkForImages = this.state.image;
+        const checkForVideos = this.state.video;
+
+        if (searchValue === '') {
+            this.setState({ errorInput: 'Please Do Not Leave Empty' });
+            return;
+        }
 
         axios.get(`https://images-api.nasa.gov/search?q=${searchValue}`)
             .then( res => {
@@ -76,7 +101,9 @@ class NasaSearch extends Component {
                     }
                 });
                 if (checkForImages === true && checkForVideos === true) {
-                    this.furtherFilteredItems = updatedItems.filter(item => item.media_type === 'image' || item.media_type === 'video');
+                    this.setState({ errorCheckBox: 'Please Select Only 1 Checkbox' });
+                    return;
+                    // this.furtherFilteredItems = updatedItems.filter(item => item.media_type === 'image' || item.media_type === 'video');
                 } else if (checkForImages === true && checkForVideos === false) {
                     this.furtherFilteredItems = updatedItems.filter(item => item.media_type === 'image');
                 } else if (checkForImages === false && checkForVideos === true) {
@@ -90,32 +117,13 @@ class NasaSearch extends Component {
             });
     }
 
-    inputChangedHandler = (event, inputIdentifier) => {
-        const updatedFormElement = updateObject(this.state.NasaForm[inputIdentifier], {
-            value: event.target.value,
-            checked: event.target.checked,
-            valid: checkValidity(event.target.value, this.state.NasaForm[inputIdentifier].validation),
-            touched: true
-        });
-        const updatedNasaForm = updateObject(this.state.NasaForm, {
-          [inputIdentifier]: updatedFormElement
-        });
-    
-        let formIsValid = true;
-        for (let inputIdentifier in updatedNasaForm) {
-          formIsValid = updatedNasaForm[inputIdentifier].valid && formIsValid;
-        }
-
-        this.setState({NasaForm: updatedNasaForm, formIsValid: formIsValid});
-    }
-
     itemSelectedHandler = (id) => {
         this.props.onItemId(id);
         this.props.history.push("/selectedItem");
     }
 
     render() {
-        let items = <p className="No-Item"> No Items, Please Search </p>
+        let items = <p className="no--item"> No Items, Please Search </p>
         if (this.state.filteredItems.length < 1 ) {
         } else {
             items = this.state.filteredItems.map(item => {
@@ -132,40 +140,33 @@ class NasaSearch extends Component {
             });
         }
 
-        const formElementsArray = [];
-        for (let key in this.state.NasaForm) {
-        formElementsArray.push({
-            id: key,
-            config: this.state.NasaForm[key]
-        });
-        }
-        let form = (
-        <form onSubmit={this.classBookHandler}>
-            {formElementsArray.map(formElement => (
-                <Input
-                    key={formElement.id}
-                    elementType={formElement.config.elementType}
-                    elementConfig={formElement.config.elementConfig}
-                    value={formElement.config.value}
-                    shouldValidate={formElement.config.validation}
-                    touched={formElement.config.touched}
-                    invalid={!formElement.config.valid}
-                    changed={(event) => this.inputChangedHandler(event, formElement.id)} />
-            ))}
-        </form>
-        );
-
         return (
             <Aux>
-                <div className="NasaBox">
+                <div className="nasa--box">
                     <h1>NASA Search <i className="fas fa-search"></i></h1>
-                        {form}
+                    <form>
+                        <label> Search Items: &nbsp; &nbsp; 
+                        <input type="text" name="searchValue" className="input--mod space--right" required={true} onChange={this.handleInputChange} />
                         <br />
-                        <Button btnType="Success" clicked={this.onFormSubmit}> Search </Button>
-                    <div className="Items"> 
+                        {this.state.errorInput}
+                        </label>
+                        <br />
+                        <label> Image: &nbsp;
+                        <input name="image" type="checkbox" className="space--right" checked={this.state.image} onChange={this.handleInputChange} />
+                        </label>
+                        <label> Video: &nbsp;
+                        <input name="video" type="checkbox" checked={this.state.video} onChange={this.handleInputChange} />
+                        </label>
+                        <br />
+                        <br />
+                        {this.state.errorCheckBox}
+                    </form>
+                        <br />
+                        <Button btnType="Success" clicked={this.handleSubmit}> Search </Button>
+                    <div className="items"> 
                         {items}
                     </div>
-                        <br />
+                    <br />
                 </div>
             </Aux>
         );
