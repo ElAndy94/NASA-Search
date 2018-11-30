@@ -94,7 +94,7 @@ class NasaSearch extends Component {
 
         axios.get(`https://images-api.nasa.gov/search?q=${searchValue}`)
             .then( res => {
-                const items = res.data.collection.items.slice(0, 40);
+                const items = res.data.collection.items;
                 const updatedItems = items.map(item => {
                     return {
                         ...item.data[0]
@@ -103,13 +103,12 @@ class NasaSearch extends Component {
                 if (checkForImages === true && checkForVideos === true) {
                     this.setState({ errorCheckBox: 'Please Select Only 1 Checkbox' });
                     return;
-                    // this.furtherFilteredItems = updatedItems.filter(item => item.media_type === 'image' || item.media_type === 'video');
                 } else if (checkForImages === true && checkForVideos === false) {
                     this.furtherFilteredItems = updatedItems.filter(item => item.media_type === 'image');
                 } else if (checkForImages === false && checkForVideos === true) {
                     this.furtherFilteredItems = updatedItems.filter(item => item.media_type === 'video');
                 }
-                
+                console.log(this.furtherFilteredItems);
                 this.setState({ items: updatedItems, filteredItems: this.furtherFilteredItems });
             })
             .catch(err => {
@@ -117,8 +116,8 @@ class NasaSearch extends Component {
             });
     }
 
-    itemSelectedHandler = (id) => {
-        this.props.onItemId(id);
+    itemSelectedHandler = (id, title, center, desc) => {
+        this.props.onItemInfo(id, this.state.image, this.state.video, title, center, desc);
         this.props.history.push("/selectedItem");
     }
 
@@ -134,7 +133,7 @@ class NasaSearch extends Component {
                     media_type={item.media_type}
                     description={item.description}
                     center={item.center}
-                    clicked={() => this.itemSelectedHandler(item.nasa_id)}
+                    clicked={() => this.itemSelectedHandler(item.nasa_id, item.title, item.center, item.description,)}
                     />
                 );
             });
@@ -145,11 +144,10 @@ class NasaSearch extends Component {
                 <div className="nasa--box">
                     <h1>NASA Search <i className="fas fa-search"></i></h1>
                     <form>
-                        <label> Search Items: &nbsp; &nbsp; 
-                        <input type="text" name="searchValue" className="input--mod space--right" required={true} onChange={this.handleInputChange} />
-                        <br />
                         {this.state.errorInput}
-                        </label>
+                        <br />
+                        <input type="text" name="searchValue" placeholder="Search items..." className="input--mod" required={true} onChange={this.handleInputChange} />
+                        <br />
                         <br />
                         <label> Image: &nbsp;
                         <input name="image" type="checkbox" className="space--right" checked={this.state.image} onChange={this.handleInputChange} />
@@ -163,7 +161,7 @@ class NasaSearch extends Component {
                     </form>
                         <br />
                         <Button btnType="Success" clicked={this.handleSubmit}> Search </Button>
-                    <div className="items"> 
+                    <div className="items">  
                         {items}
                     </div>
                     <br />

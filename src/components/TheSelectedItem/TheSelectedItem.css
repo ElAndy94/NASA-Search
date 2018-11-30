@@ -1,6 +1,6 @@
 .item {
     background-image: linear-gradient(to right bottom, rgba(111, 172, 213, 0.8), rgba(83, 134, 211, 0.8));
-    width: 550px;
+    width: 650px;
     padding: 16px;
     text-align: center;
     border: 1px solid #eee;
@@ -20,7 +20,13 @@
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
   
-  .Details {
-    margin: 16px 0;
-    color: #fff;
-  }
+.center--text {
+  font-size: 20px;
+  font-weight: 700;
+  color: black;
+}
+
+.desc--text {
+  font-size: 20px;
+  letter-spacing: 0.7px;
+}

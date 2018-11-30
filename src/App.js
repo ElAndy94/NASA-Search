@@ -10,20 +10,24 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemId: null
+      itemId: null,
+      itemImage: false,
+      itemVideo: false,
+      title: '',
+      desc: '',
+      center: '',
     }
   }
 
-  handleItemId = (id) => {
-    this.setState({ itemId: id });
-    console.log(id);
+  handleItemInfo = (id, img, video, title, center, desc) => {
+    this.setState({ itemId: id, itemImage: img, itemVideo: video, title: title, center: center, desc: desc });
   }
 
   render() {
     let routes = (
       <Switch>
-        <Route path="/selectedItem" render={(props) => <SelectedItem {...props} itemId={this.state.itemId} />}/>
-        <Route path="/" exact render={(props) => <NasaSearch {...props} onItemId={this.handleItemId} />}/>
+        <Route path="/selectedItem" render={(props) => <SelectedItem {...props} itemId={this.state.itemId} itemImg={this.state.itemImage} itemVid={this.state.itemVideo} title={this.state.title} center={this.state.center} desc={this.state.desc} />}/>
+        <Route path="/" exact render={(props) => <NasaSearch {...props} onItemInfo={this.handleItemInfo} />}/>
         <Redirect to="/" />
       </Switch>
     );

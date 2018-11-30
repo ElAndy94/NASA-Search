@@ -41,13 +41,19 @@ h1 {
 }
 
 .input--mod {
-    width: 25%;
+    text-align: center;
+    margin-top: 1em;
+    width: 35%;
     padding-top: 6px;
     padding-left: 2px;
-    font-size: 20px;
+    font-size: 24px;
     font-family: "Lato", sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
+    -moz-border-radius:50px; /* Firefox */
+    -webkit-border-radius: 50px; /* Safari, Chrome */
+    -khtml-border-radius: 50px; /* KHTML */
+    border-radius: 50px; /* CSS3 */
 }
 
 .checkbox {

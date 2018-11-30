@@ -11,23 +11,20 @@ class SelectedItem extends Component {
         super(props);
         this.state = {
             assets: [],
-            filteredAssets: [],
-            video: true,
+            filteredAssets: []
         }
     }
 
     componentDidMount() {
         const searchValue = this.props.itemId; 
-
         axios.get(`https://images-api.nasa.gov/asset/${searchValue}`)
             .then( res => {
-                const items = res.data.collection.items;
+                const items = res.data.collection.items.slice(0,1);
                 const updatedItems = items.map(item => {
                     return {
                         ...item
                     }
                 });
-                console.log(updatedItems);
                 this.setState({ assets: updatedItems, filteredAssets: updatedItems });
             })
             .catch(err => {
@@ -41,21 +38,23 @@ class SelectedItem extends Component {
 
     render() {
         let items = <p className="no--item"> Your Item Was Not Found, Please Press Back and Try again!</p>
-        if (this.state.filteredAssets.length < 1 ) {
-        } else {
-            items = this.state.filteredAssets.map(item => {
-                return  (
-                    <TheSelectedItem
-                    key={item.href}
-                    title={item.href}
-                    // title={item.title}
-                    // media_type={item.media_type}
-                    // description={item.description}
-                    // center={item.center}
-                    // clicked={() => this.itemSelectedHandler(item.nasa_id)}
-                    />
-                );
-            });
+        if ((this.props.itemImg === true && this.props.itemVid === false) || (this.props.itemImg === false && this.props.itemVid === true)) {
+            if (this.state.filteredAssets.length < 1) {
+            } else {
+                items = this.state.filteredAssets.map(item => {
+                    return  (
+                        <TheSelectedItem
+                        key={item.href}
+                        name={item.href}
+                        title={this.props.title}
+                        center={this.props.center}
+                        desc={this.props.desc}
+                        image={this.props.itemImg}
+                        video={this.props.itemVid}
+                        />
+                    );
+                });
+            }
         }
 
         return (
